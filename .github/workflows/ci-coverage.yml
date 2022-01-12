@@ -1,6 +1,8 @@
 name: CI-coverage
 
-on: [push]
+on: 
+ push:
+    branches: [ master ]
 
 jobs:
   build-test:
@@ -21,7 +23,10 @@ jobs:
         env:
           XDEBUG_MODE: coverage
           TEST_NAME: Scarlett
-      - name: automerge
-        uses: "pascalgn/automerge-action@v0.14.3"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Auto Merge    
+        uses: everlytic/branch-merge@1.1.2
+        with:
+          github_token: ${{ github.token }}
+          source_ref: ${{ github.ref }}
+          target_branch: 'Release'
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
